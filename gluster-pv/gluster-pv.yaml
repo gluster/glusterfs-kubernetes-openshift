@@ -1,0 +1,14 @@
+iapiVersion: "v1"
+kind: "PersistentVolume"
+metadata:
+name: "gluster-default-volume"
+spec:
+capacity:
+storage: "8Gi"
+accessModes:
+- "ReadWriteMany"
+glusterfs:
+endpoints: "glusterfs-cluster"
+path: "gluster_vol"
+readOnly: false
+persistentVolumeReclaimPolicy: "Recycle"
