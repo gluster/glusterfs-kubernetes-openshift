@@ -156,3 +156,203 @@ Refer # http://tinyurl.com/hne8g7o
 
 
 
+
+~~~
+[root@atomic-node2~]# oc create -f gluster-template.json
+template "gluster1" created
+[root@atomic-node2~]# oc process gluster1 -v NAME=gluster1 -v HOSTNAME=atomic-node2|oc create -f -
+deploymentconfig "gluster1" created
+[root@atomic-node2~]# oc get pods
+NAME                READY     STATUS    RESTARTS   AGE
+gluster1-1-deploy   1/1       Running   0          3s
+[root@atomic-node2~]# oc describe pod gluster1-1-deploy
+Name:				gluster1-1-deploy
+Namespace:			default
+Image(s):			openshift3/ose-deployer:v3.1.1.6
+Node:				atomic-node2/10.70.43.183
+Start Time:			Thu, 19 May 2016 13:32:34 +0530
+Labels:				openshift.io/deployer-pod-for.name=gluster1-1
+Status:				Running
+Reason:				
+Message:			
+IP:				10.1.0.19
+Replication Controllers:	<none>
+Containers:
+  deployment:
+    Container ID:	docker://e6ffd0d1f369ad603803ed118e11b1855714ea57b47034b436b4325d7b67e00a
+    Image:		openshift3/ose-deployer:v3.1.1.6
+    Image ID:		docker://83d05f2929e92a7e8e9b62b33e408c1d83c3fe0e0de014475cb01c7d0fac7fb0
+    QoS Tier:
+      cpu:		BestEffort
+      memory:		BestEffort
+    State:		Running
+      Started:		Thu, 19 May 2016 13:32:36 +0530
+    Ready:		True
+    Restart Count:	0
+    Environment Variables:
+      KUBERNETES_MASTER:	https://atomic-node2:8443
+      OPENSHIFT_MASTER:		https://atomic-node2:8443
+      BEARER_TOKEN_FILE:	/var/run/secrets/kubernetes.io/serviceaccount/token
+      OPENSHIFT_CA_DATA:	-----BEGIN CERTIFICATE-----
+MIIC5jCCAdCgAwIBAgIBATALBgkqhkiG9w0BAQswJjEkMCIGA1UEAwwbb3BlbnNo
+aWZ0LXNpZ25lckAxNDU2ODIwMTYyMB4XDTE2MDMwMTA4MTYwMloXDTIxMDIyODA4
+MTYwM1owJjEkMCIGA1UEAwwbb3BlbnNoaWZ0LXNpZ25lckAxNDU2ODIwMTYyMIIB
+IjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3XRxVLp7K/RJp2jezD3675Af
+pLPbn4C4ZRDUM5v6gGF3mPboii40DYPY9ZxmX0fhnzidOp6jI3tmVXSsuBQszGi9
+lNAvr+eqoz2Wf44EQhQ1+AtH6VcSFaGjGoMpkteskjuj9WV7qlGwS9uoql3ZwkEC
+l8G+D95/opn691McWBe0KDebgl/Rpu+xk8T3ZR1rYSU4p3v0jD4Ir8bitiC/22wt
+lq6f5UvhPU8jm+Y8xpaeFagnzZAgt+szycTymTIDQ1f66Qc/cIdS/WKzMqjyp5W1
+6GKoNGrJm5KhqmqLnFOJ5Y9tzWCCbfTMHNo+fLWTpsk8uK3IR2cQRTp1hxpUBQID
+AQABoyMwITAOBgNVHQ8BAf8EBAMCAKQwDwYDVR0TAQH/BAUwAwEB/zALBgkqhkiG
+9w0BAQsDggEBAA310d2eeAApVoKNisDWTvPiuy9OIfVIyTe+Xcs63XM6vLVkNSSv
+JKK/+HWdLF7AV4qlFY2azHsqThqwtReMKVBGo5CuCb7nOl6pTtGt15muFVIxccT0
+m4mR0A49wpmCBB5DJA5sLA0RB8nA1pf8Q50KqMpUVIU6scoWAjHNHt+jHKVVXMSY
+1enpa2CDeDW60uArAA/5UXvSW70bplF+EizlCfZ/XnAD5JiyZVNbptGKKja3eXrw
+ZVkBBkN4IqXjSS98xur+LdQ4MS4K/S9xHXN1lhaWEQboiJD8cNOF0+XyWY9UCcUB
+vIc6dUlEFaJaKB/JNUowfywiIQ/ABeFaiZ8=
+-----END CERTIFICATE-----
+
+      OPENSHIFT_DEPLOYMENT_NAME:	gluster1-1
+      OPENSHIFT_DEPLOYMENT_NAMESPACE:	default
+Conditions:
+  Type		Status
+  Ready 	True 
+Volumes:
+  deployer-token-tvmcp:
+    Type:	Secret (a secret that should populate this volume)
+    SecretName:	deployer-token-tvmcp
+Events:
+  FirstSeen	LastSeen	Count	From						SubobjectPath				Reason		Message
+  ─────────	────────	─────	────						─────────────				──────		───────
+  12s		12s		1	{scheduler }										Scheduled	Successfully assigned gluster1-1-deploy to atomic-node2
+  11s		11s		1	{kubelet atomic-node2}	implicitly required container POD	Pulled		Container image "openshift3/ose-pod:v3.1.1.6" already present on machine
+  11s		11s		1	{kubelet atomic-node2}	implicitly required container POD	Created		Created with docker id 84751e8ffe5e
+  10s		10s		1	{kubelet atomic-node2}	implicitly required container POD	Started		Started with docker id 84751e8ffe5e
+  10s		10s		1	{kubelet atomic-node2}	spec.containers{deployment}		Pulled		Container image "openshift3/ose-deployer:v3.1.1.6" already present on machine
+  10s		10s		1	{kubelet atomic-node2}	spec.containers{deployment}		Created		Created with docker id e6ffd0d1f369
+  10s		10s		1	{kubelet atomic-node2}	spec.containers{deployment}		Started		Started with docker id e6ffd0d1f369
+
+
+[root@atomic-node2~]# oc get pods
+NAME                READY     STATUS    RESTARTS   AGE
+gluster1-1-deploy   1/1       Running   0          16s
+gluster1-1-k1dv6    1/1       Running   0          12s
+
+[root@atomic-node2~]# oc get pods
+NAME               READY     STATUS    RESTARTS   AGE
+gluster1-1-k1dv6   1/1       Running   0          32s
+[root@atomic-node2~]# oc describe pod gluster1-1-k1dv6
+Name:				gluster1-1-k1dv6
+Namespace:			default
+Image(s):			gluster/gluster-centos
+Node:				atomic-node2/10.70.43.183
+Start Time:			Thu, 19 May 2016 13:32:38 +0530
+Labels:				deployment=gluster1-1,deploymentconfig=gluster1,name=gluster1
+Status:				Running
+Reason:				
+Message:			
+IP:				10.1.0.20
+Replication Controllers:	gluster1-1 (1/1 replicas created)
+Containers:
+  glusterfs:
+    Container ID:	docker://12432af860908e9eab3b1d64d8abb4654bf5d23baa787389a3aecbf30308b63a
+    Image:		gluster/gluster-centos
+    Image ID:		docker://7dd2be8087cbc54bcac76a2f220d6f0cef7992dc6966cdf52611d12f7e01a823
+    QoS Tier:
+      cpu:		BestEffort
+      memory:		BestEffort
+    State:		Running
+      Started:		Thu, 19 May 2016 13:32:39 +0530
+    Ready:		True
+    Restart Count:	0
+    Environment Variables:
+Conditions:
+  Type		Status
+  Ready 	True 
+Volumes:
+  glusterfs-etc:
+    Type:	HostPath (bare host directory volume)
+    Path:	/etc/glusterfs
+  glusterfs-logs:
+    Type:	HostPath (bare host directory volume)
+    Path:	/var/log/glusterfs
+  glusterfs-config:
+    Type:	HostPath (bare host directory volume)
+    Path:	/var/lib/glusterd
+  glusterfs-dev:
+    Type:	HostPath (bare host directory volume)
+    Path:	/dev
+  glusterfs-cgroup:
+    Type:	HostPath (bare host directory volume)
+    Path:	/sys/fs/cgroup
+  default-token-72d89:
+    Type:	Secret (a secret that should populate this volume)
+    SecretName:	default-token-72d89
+Events:
+  FirstSeen	LastSeen	Count	From						SubobjectPath				Reason		Message
+  ─────────	────────	─────	────						─────────────				──────		───────
+  41s		41s		1	{scheduler }										Scheduled	Successfully assigned gluster1-1-k1dv6 to atomic-node2
+  41s		41s		1	{kubelet atomic-node2}	implicitly required container POD	Pulled		Container image "openshift3/ose-pod:v3.1.1.6" already present on machine
+  41s		41s		1	{kubelet atomic-node2}	implicitly required container POD	Created		Created with docker id ca1ff8adf07c
+  41s		41s		1	{kubelet atomic-node2}	implicitly required container POD	Started		Started with docker id ca1ff8adf07c
+  40s		40s		1	{kubelet atomic-node2}	spec.containers{glusterfs}		Pulled		Container image "gluster/gluster-centos" already present on machine
+  40s		40s		1	{kubelet atomic-node2}	spec.containers{glusterfs}		Created		Created with docker id 12432af86090
+  40s		40s		1	{kubelet atomic-node2}	spec.containers{glusterfs}		Started		Started with docker id 12432af86090
+
+
+[root@atomic-node2~]# oc get pods
+NAME               READY     STATUS    RESTARTS   AGE
+gluster1-1-k1dv6   1/1       Running   0          44s
+[root@atomic-node2~]# oc get pods
+NAME               READY     STATUS    RESTARTS   AGE
+gluster1-1-k1dv6   1/1       Running   0          46s
+[root@atomic-node2~]# oc get pods
+NAME               READY     STATUS    RESTARTS   AGE
+gluster1-1-k1dv6   1/1       Running   0          2m
+[root@atomic-node2~]# oc get pods
+NAME               READY     STATUS    RESTARTS   AGE
+gluster1-1-k1dv6   1/1       Running   0          2m
+[root@atomic-node2~]# oc edit pod gluster1-1-k1dv6
+Edit cancelled, no changes made.
+[root@atomic-node2~]# oc exec -ti gluster1-1-k1dv6 /bin/bash
+[root@gluster1-1-k1dv6 /]# 
+[root@gluster1-1-k1dv6 /]# 
+[root@gluster1-1-k1dv6 /]# 
+[root@gluster1-1-k1dv6 /]# systemctl status glusterd
+● glusterd.service - GlusterFS, a clustered file-system server
+   Loaded: loaded (/usr/lib/systemd/system/glusterd.service; enabled; vendor preset: disabled)
+   Active: active (running) since Thu 2016-05-19 04:02:45 EDT; 3min 16s ago
+  Process: 216 ExecStart=/usr/sbin/glusterd -p /var/run/glusterd.pid --log-level $LOG_LEVEL $GLUSTERD_OPTIONS (code=exited, status=0/SUCCESS)
+ Main PID: 219 (glusterd)
+   CGroup: /system.slice/docker-12432af860908e9eab3b1d64d8abb4654bf5d23baa787389a3aecbf30308b63a.scope/system.slice/glusterd.service
+           └─219 /usr/sbin/glusterd -p /var/run/glusterd.pid --log-level INFO...
+
+May 19 04:02:40 gluster1-1-k1dv6 systemd[1]: Starting GlusterFS, a clustered....
+May 19 04:02:45 gluster1-1-k1dv6 systemd[1]: Started GlusterFS, a clustered ....
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@gluster1-1-k1dv6 /]# gluster v info
+No volumes present
+[root@gluster1-1-k1dv6 /]# service sshd status
+Redirecting to /bin/systemctl status  sshd.service
+● sshd.service - OpenSSH server daemon
+   Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2016-05-19 04:02:40 EDT; 3min 38s ago
+     Docs: man:sshd(8)
+           man:sshd_config(5)
+ Main PID: 217 (sshd)
+   CGroup: /system.slice/docker-12432af860908e9eab3b1d64d8abb4654bf5d23baa787389a3aecbf30308b63a.scope/system.slice/sshd.service
+           └─217 /usr/sbin/sshd -D
+
+May 19 04:02:40 gluster1-1-k1dv6 systemd[1]: Started OpenSSH server daemon.
+May 19 04:02:40 gluster1-1-k1dv6 systemd[1]: Starting OpenSSH server daemon...
+May 19 04:02:40 gluster1-1-k1dv6 sshd[217]: Server listening on 0.0.0.0 port 22.
+May 19 04:02:40 gluster1-1-k1dv6 sshd[217]: Server listening on :: port 22.
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@gluster1-1-k1dv6 /]#  cat /etc/redhat-release
+CentOS Linux release 7.2.1511 (Core)
+[root@gluster1-1-k1dv6 /]# exit
+exit
+[root@atomic-node2~]# 
+~~~
+
+
