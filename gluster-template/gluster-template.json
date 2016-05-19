@@ -5,11 +5,11 @@
         "name": "gluster1",
         "annotations": {
             "description": "GlusterFS container deployment template",
-            "tags": "gluster1"
+            "tags": "glusterfs"
         }
     },
     "labels": {
-        "template": "gluster1"
+        "template": "glusterfs"
     },
     "objects": [
         {
@@ -22,12 +22,6 @@
                 }
             },
             "spec": {
-                "strategy": {
-                    "type": "Custom",
-                    "customParams": {
-                        "image": "gluster/gluster-centos"
-                    }
-                },
                 "replicas": 1,
                 "selector": {
                     "name": "${NAME}"
@@ -39,42 +33,105 @@
                             "name": "${NAME}"
                         }
                     },
+                    "triggers": [
+                        {
+                            "type": "ConfigChange"
+                        }
+                    ],
+                    "strategy": {
+                        "type": "Replace"
+                    },
                     "spec": {
-	                "nodeSelector": {
-	                    "kubernetes.io/hostname": "${HOSTNAME}"
-	                },
+                        "nodeSelector": {
+                              "kubernetes.io/hostname": "${HOSTNAME}"
+                        },
                         "containers": [
                             {
                                 "image": "gluster/gluster-centos",
-                                "name": "${NAME}",
-				"volumeMounts": [
-					{
-						"name": "gluster-cgroup",
-						"mountPath": "/sys/fs/cgroup"
-					}
-				],
-		                "imagePullPolicy": "Always",
-		                "securityContext": {
-		                    "capabilities": {},
-		                    "privileged": true
-		                }
+                                "name": "glusterfs",
+                                "volumeMounts": [
+                                   
+                                    {
+                                        "name": "glusterfs-etc",
+                                        "mountPath": "/etc/glusterfs"
+                                    },
+                                    {
+                                        "name": "glusterfs-logs",
+                                        "mountPath": "/var/log/glusterfs"
+                                    },
+                                    {
+                                        "name": "glusterfs-config",
+                                        "mountPath": "/var/lib/glusterd"
+                                    },
+                                    {
+                                        "name": "glusterfs-dev",
+                                        "mountPath": "/dev"
+                                    },
+                                    {
+                                        "name": "glusterfs-cgroup",
+                                        "mountPath": "/sys/fs/cgroup"
+                                    }
+                                ],
+                                "securityContext": {
+                                    "capabilities": {},
+                                    "privileged": true
+                                },
+                                "readinessProbe": {
+                                    "timeoutSeconds": 3,
+                                    "initialDelaySeconds": 3,
+                                    "tcpSocket": {
+                                        "port": 24007
+                                    }
+                                },
+                                "livenessProbe": {
+                                    "timeoutSeconds": 3,
+                                    "initialDelaySeconds": 30,
+                                    "tcpSocket": {
+                                        "port": 24007
+                                    }
+                                }
                             }
                         ],
-		        "volumes": [
-			    {
-				"name": "gluster-cgroup",
-				"hostPath": {
-				    "path": "/sys/fs/cgroup"
-				}
-			    }
-		        ]
+                        "volumes": [
+                           
+                            {
+                                "name": "glusterfs-etc",
+                                "hostPath": {
+                                    "path": "/etc/glusterfs"
+                                }
+                            },
+                            {
+                                "name": "glusterfs-logs",
+                                "hostPath": {
+                                    "path": "/var/log/glusterfs"
+                                }
+                            },
+                            {
+                                "name": "glusterfs-config",
+                                "hostPath": {
+                                    "path": "/var/lib/glusterd"
+                                }
+                            },
+                            {
+                                "name": "glusterfs-dev",
+                                "hostPath": {
+                                    "path": "/dev"
+                                }
+                            },
+                            {
+                                "name": "glusterfs-cgroup",
+                                "hostPath": {
+                                    "path": "/sys/fs/cgroup"
+                                }
+                            }
+                        ]
                     }
                 }
             }
         }
     ],
     "parameters": [
-        {
+                {
             "name": "NAME",
             "displayName": "Name",
             "description": "The name assigned to all of the frontend objects defined in this template.",
@@ -88,7 +145,6 @@
             "required": true,
             "value": "node-1"
         }
-
     ]
 }
 
