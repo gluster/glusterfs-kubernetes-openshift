@@ -1,8 +1,20 @@
-# glusterfs-k8s-ose
-GlusterFS + Kubernetes + Openshift 
+
+There are different ways to deploy and use GlusterFS in Kubernetes/openshift setup. 
 
 ### Deploying GlusterFS Pod:
 
+GlusterFS pods can be deployed in Kubernetes/Openshift, so that Gluster Nodes are deployed in containers and it can provide persistent storage for  Openshift/Kubernetes setup.
+
+
+
+The examples files in this repo are used for this demo.
+
+Step 1: Create GlusterFS pod  
+
+~~~
+[root@atomic-node2 gluster_pod]# oc create -f gluster-1.yaml
+~~~
+Step 2: Get details about the GlusterFS pod.
 
 ~~~
 [root@atomic-node2 gluster_pod]# oc describe pod gluster-1
@@ -52,10 +64,20 @@ Events:
   8s		8s		1	{kubelet atomic-node1}	spec.containers{glusterfs}		Created		Created with docker id ff8f4af700d7
   8s		8s		1	{kubelet atomic-node1}	spec.containers{glusterfs}		Started		Started with docker id ff8f4af700d7
 
+~~~
 
+From above logs you can see it pulled 'gluster/gluster-centos' container image and depoyed containers from it.
+
+~~~
 [root@atomic-node2 gluster_pod]# oc get pods
 NAME        READY     STATUS    RESTARTS   AGE
 gluster-1   1/1       Running   0          1m
+~~~
+
+Examine the container and make sure it has a running GlusterFS deamon.
+
+~~~
+
 [root@atomic-node2 gluster_pod]# oc exec -ti gluster-1 /bin/bash
 [root@atomic-node1 /]# 
 [root@atomic-node1 /]# 
