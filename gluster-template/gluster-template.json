@@ -81,7 +81,7 @@
 					"command": [
 					    "/bin/bash",
 					    "-c",
-					    "/usr/sbin/glusterd --version"
+					    "systemctl status glusterd.service"
 					]
 				    }
                                 },
@@ -90,7 +90,7 @@
 					"command": [
 					    "/bin/bash",
 					    "-c",
-					    "/usr/sbin/glusterd --version"
+					    "systemctl status glusterd.service"
 					]
 				    }
                                 }
