@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: gluster-1
+  name: gluster
   labels:
-    name: gluster-1
+    name: gluster
 spec:
   hostNetwork: true
   containers:
-    - name: glusterfs
+    - name: gluster
       image: gluster/gluster-centos
       ports:
-        - name: web
-          containerPort: 80
+        - name: gluster
+          containerPort: 24007
       volumeMounts:
           - name: brickpath
             mountPath: "/mnt/brick1"
@@ -22,5 +22,3 @@ spec:
     - name: brickpath
       hostPath:
         path: "/mnt/brick1"
-
-

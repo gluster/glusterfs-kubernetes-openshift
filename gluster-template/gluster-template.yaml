@@ -1,0 +1,73 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      description: Deploys the GlusterFS container
+    labels:
+      template: glusterfs
+    name: gluster1
+  spec:
+    replicas: 1
+    selector:
+      name: gluster1
+    template:
+      metadata:
+        labels:
+          name: gluster1
+        name: gluster1
+      spec:
+        containers:
+        - image: gluster/gluster-centos
+          livenessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - systemctl status glusterd.service
+          name: glusterfs
+          readinessProbe:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - systemctl status glusterd.service
+          securityContext:
+            capabilities: {}
+            privileged: true
+          volumeMounts:
+          - mountPath: /etc/glusterfs
+            name: glusterfs-etc
+          - mountPath: /var/log/glusterfs
+            name: glusterfs-logs
+          - mountPath: /var/lib/glusterd
+            name: glusterfs-config
+          - mountPath: /dev
+            name: glusterfs-dev
+          - mountPath: /sys/fs/cgroup
+            name: glusterfs-cgroup
+        nodeSelector:
+          kubernetes.io/hostname: node-1
+        volumes:
+        - hostPath:
+            path: /etc/glusterfs
+          name: glusterfs-etc
+        - hostPath:
+            path: /var/log/glusterfs
+          name: glusterfs-logs
+        - hostPath:
+            path: /var/lib/glusterd
+          name: glusterfs-config
+        - hostPath:
+            path: /dev
+          name: glusterfs-dev
+        - hostPath:
+            path: /sys/fs/cgroup
+          name: glusterfs-cgroup
+      strategy:
+        type: Replace
+      triggers:
+      - type: ConfigChange
+kind: List
+metadata: {}
