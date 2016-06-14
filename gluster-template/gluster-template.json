@@ -2,14 +2,14 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "gluster1",
+        "name": "gluster",
         "annotations": {
             "description": "GlusterFS container deployment template",
-            "tags": "glusterfs"
+            "tags": "gluster"
         }
     },
     "labels": {
-        "template": "glusterfs"
+        "template": "gluster"
     },
     "objects": [
         {
@@ -48,27 +48,27 @@
                         "containers": [
                             {
                                 "image": "gluster/gluster-centos",
-                                "name": "glusterfs",
+                                "name": "gluster",
                                 "volumeMounts": [
                                    
                                     {
-                                        "name": "glusterfs-etc",
-                                        "mountPath": "/etc/glusterfs"
+                                        "name": "gluster-etc",
+                                        "mountPath": "/etc/gluster"
                                     },
                                     {
-                                        "name": "glusterfs-logs",
-                                        "mountPath": "/var/log/glusterfs"
+                                        "name": "gluster-logs",
+                                        "mountPath": "/var/log/gluster"
                                     },
                                     {
-                                        "name": "glusterfs-config",
+                                        "name": "gluster-config",
                                         "mountPath": "/var/lib/glusterd"
                                     },
                                     {
-                                        "name": "glusterfs-dev",
+                                        "name": "gluster-dev",
                                         "mountPath": "/dev"
                                     },
                                     {
-                                        "name": "glusterfs-cgroup",
+                                        "name": "gluster-cgroup",
                                         "mountPath": "/sys/fs/cgroup"
                                     }
                                 ],
@@ -99,31 +99,31 @@
                         "volumes": [
                            
                             {
-                                "name": "glusterfs-etc",
+                                "name": "gluster-etc",
                                 "hostPath": {
-                                    "path": "/etc/glusterfs"
+                                    "path": "/etc/gluster"
                                 }
                             },
                             {
-                                "name": "glusterfs-logs",
+                                "name": "gluster-logs",
                                 "hostPath": {
-                                    "path": "/var/log/glusterfs"
+                                    "path": "/var/log/gluster"
                                 }
                             },
                             {
-                                "name": "glusterfs-config",
+                                "name": "gluster-config",
                                 "hostPath": {
                                     "path": "/var/lib/glusterd"
                                 }
                             },
                             {
-                                "name": "glusterfs-dev",
+                                "name": "gluster-dev",
                                 "hostPath": {
                                     "path": "/dev"
                                 }
                             },
                             {
-                                "name": "glusterfs-cgroup",
+                                "name": "gluster-cgroup",
                                 "hostPath": {
                                     "path": "/sys/fs/cgroup"
                                 }
@@ -140,7 +140,7 @@
             "displayName": "Name",
             "description": "The name assigned to all of the frontend objects defined in this template.",
             "required": true,
-            "value": "gluster1"
+            "value": "gluster"
         },
         {
             "name": "HOSTNAME",
