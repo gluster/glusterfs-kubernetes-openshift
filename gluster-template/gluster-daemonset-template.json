@@ -1,0 +1,140 @@
+{
+	"kind": "Template",
+	"apiVersion": "v1",
+	"metadata": {
+		"name": "gluster",
+		"creationTimestamp": null
+	},
+	"objects": [{
+		"apiVersion": "extensions/v1beta1",
+		"kind": "DaemonSet",
+		"metadata": {
+			"creationTimestamp": null,
+			"generation": 1,
+			"labels": {
+				"name": "gluster"
+			},
+			"name": "gluster",
+			"namespace": "default"
+		},
+		"spec": {
+			"selector": {
+				"matchLabels": {
+					"name": "gluster"
+				}
+			},
+			"template": {
+				"metadata": {
+					"creationTimestamp": null,
+					"labels": {
+						"name": "gluster"
+					}
+				},
+				"spec": {
+					"containers": [{
+						"image": "gluster/gluster-centos",
+						"imagePullPolicy": "Always",
+						"livenessProbe": {
+							"exec": {
+								"command": [
+									"/bin/bash",
+									"-c",
+									"systemctl status glusterd.service"
+								]
+							},
+							"failureThreshold": 3,
+							"periodSeconds": 10,
+							"successThreshold": 1,
+							"timeoutSeconds": 1
+						},
+						"name": "gluster",
+						"readinessProbe": {
+							"exec": {
+								"command": [
+									"/bin/bash",
+									"-c",
+									"systemctl status glusterd.service"
+								]
+							},
+							"failureThreshold": 3,
+							"periodSeconds": 10,
+							"successThreshold": 1,
+							"timeoutSeconds": 1
+						},
+						"resources": {},
+						"securityContext": {
+							"privileged": true
+						},
+						"terminationMessagePath": "/dev/termination-log",
+						"volumeMounts": [{
+							"mountPath": "/mnt/brick1",
+							"name": "gluster-brick"
+						}, {
+							"mountPath": "/etc/gluster",
+							"name": "gluster-etc"
+						}, {
+							"mountPath": "/var/log/gluster",
+							"name": "gluster-logs"
+						}, {
+							"mountPath": "/var/lib/glusterd",
+							"name": "gluster-config"
+						}, {
+							"mountPath": "/dev",
+							"name": "gluster-dev"
+						}, {
+							"mountPath": "/sys/fs/cgroup",
+							"name": "gluster-cgroup"
+						}]
+					}],
+					"dnsPolicy": "ClusterFirst",
+					"hostNetwork": true,
+					"nodeSelector": {
+						"region": "${region}"
+					},
+					"restartPolicy": "Always",
+					"securityContext": {},
+					"terminationGracePeriodSeconds": 1,
+					"volumes": [{
+						"hostPath": {
+							"path": "/mnt/brick1"
+						},
+						"name": "gluster-brick"
+					}, {
+						"hostPath": {
+							"path": "/etc/gluster"
+						},
+						"name": "gluster-etc"
+					}, {
+						"hostPath": {
+							"path": "/var/log/gluster"
+						},
+						"name": "gluster-logs"
+					}, {
+						"hostPath": {
+							"path": "/var/lib/glusterd"
+						},
+						"name": "gluster-config"
+					}, {
+						"hostPath": {
+							"path": "/dev"
+						},
+						"name": "gluster-dev"
+					}, {
+						"hostPath": {
+							"path": "/sys/fs/cgroup"
+						},
+						"name": "gluster-cgroup"
+					}]
+				}
+			}
+		}
+	}],
+	"parameters": [{
+		"name": "region",
+		"displayName": "Region tag for GlusterFS nodes",
+		"description": "Tag of storage node for label region which will run the container",
+		"required": true,
+		"value": "storage"
+	}]
+}
+
