@@ -1,4 +1,4 @@
-iapiVersion: "v1"
+apiVersion: "v1"
 kind: "PersistentVolume"
 metadata:
 name: "gluster-default-volume"
