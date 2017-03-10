@@ -171,7 +171,7 @@ gluster-1   1/1       Running   0          3m
 
 ### Deploying GlusterFS PV, PVC, SERVICE and ENDPOINT
 
-Refer # http://tinyurl.com/hne8g7o
+Refer # http://www.humblec.com/persistent-volume-and-persistent-volume-claim-in-openshift-and-kubernetes-using-glusterfs-volume-plugin/
 
 ### Deploying GlusterFS Template 
 
